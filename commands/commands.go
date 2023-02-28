@@ -253,14 +253,14 @@ func RunCommand(input string, s *discordgo.Session, m *discordgo.Message) {
 				if CheckAdmin(m.Author.ID) {
 					execute = true
 				} else {
-					err = "You are not an admin!"
+					err = "¡No eres un administrador!"
 				}
 			} else {
 				execute = true
 			}
 			if roleID, exists := support.Config.CommandRoles[commandName]; exists {
 				// TODO? role name
-				err = "You don't have the required role"
+				err = "No tienes el rol requerido"
 				for _, memberRoleID := range m.Member.Roles {
 					if memberRoleID == roleID {
 						execute = true
@@ -275,7 +275,7 @@ func RunCommand(input string, s *discordgo.Session, m *discordgo.Message) {
 			return
 		}
 	}
-	support.SendFormat(s, "Command not found. Try using \"$help\"")
+	support.SendFormat(s, "Comando no encontrado. Intenta usar \"$help\"")
 }
 
 // CheckAdmin checks if the user attempting to run an admin command is an admin
