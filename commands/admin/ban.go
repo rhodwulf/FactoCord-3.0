@@ -11,7 +11,7 @@ import (
 var BanPlayerDoc = support.CommandDoc{
 	Name:  "ban",
 	Usage: "$ban <player> <reason>",
-	Doc:   `command bans the player on the server with a specified reason`,
+	Doc:   `el comando prohíbe al jugador en el servidor por un motivo específico`,
 }
 
 // BanPlayer bans a player on the server.
@@ -32,8 +32,8 @@ func BanPlayer(s *discordgo.Session, args string) {
 	command := "/ban " + player + " " + reason
 	success := support.Factorio.Send(command)
 	if success {
-		support.Send(s, "Player "+player+" banned with reason \""+reason+"\"!")
+		support.Send(s, "Jugador "+player+" prohibido con razon \""+reason+"\"!")
 	} else {
-		support.Send(s, "Sorry, there was an error sending /ban command")
+		support.Send(s, "Lo siento, hubo un error al enviar el comando /ban")
 	}
 }
