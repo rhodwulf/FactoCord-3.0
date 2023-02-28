@@ -12,13 +12,13 @@ import (
 
 var OnlineDoc = support.CommandDoc{
 	Name: "online",
-	Doc:  `shows players online (and max number of players if set)`,
+	Doc:  `muestra los jugadores en línea (y el número máximo de jugadores si está configurado)`,
 }
 
 func getOnline(info *gameInfo) *support.TextListT {
 	if len(info.Players) == 0 {
 		return &support.TextListT{
-			Heading: "**No one is online**",
+			Heading: "**nadie está en línea**",
 			None:    "",
 		}
 	}
@@ -27,7 +27,7 @@ func getOnline(info *gameInfo) *support.TextListT {
 		maxPlayers = fmt.Sprintf("/%d", info.MaxPlayers)
 	}
 	online := support.DefaultTextList(
-		fmt.Sprintf("**%d%s player%s online:**", len(info.Players), maxPlayers, support.PluralS(len(info.Players))),
+		fmt.Sprintf("**%d%s jugador%es en línea:**", len(info.Players), maxPlayers, support.PluralS(len(info.Players))),
 	)
 	for _, player := range info.Players {
 		online.Append(player)
@@ -37,11 +37,11 @@ func getOnline(info *gameInfo) *support.TextListT {
 
 func GameOnline(s *discordgo.Session, _ string) {
 	if !support.Factorio.IsRunning() {
-		support.Send(s, "The server is not running")
+		support.Send(s, "El servidor no está funcionando.")
 		return
 	}
 	if support.Factorio.GameID == "" {
-		support.Send(s, "The server did not register a game on the factorio server")
+		support.Send(s, "El servidor no registró un juego en el servidor de factorio")
 		return
 	}
 
