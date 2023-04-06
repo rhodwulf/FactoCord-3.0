@@ -8,13 +8,13 @@ import (
 
 var SaveServerDoc = support.CommandDoc{
 	Name: "save",
-	Doc:  `command sends a command to save the game to the server`,
+	Doc:  `comando envía un comando para guardar el juego en el servidor`,
 }
 
 // SaveServer executes the save command on the server.
 func SaveServer(s *discordgo.Session, args string) {
 	if len(args) != 0 {
-		support.Send(s, "Save accepts no arguments")
+		support.Send(s, "Save no acepta argumentos")
 		return
 	}
 	success := support.Factorio.Send("/save")
@@ -22,6 +22,6 @@ func SaveServer(s *discordgo.Session, args string) {
 		support.Factorio.SaveRequested = true
 		//support.Send(s, "Server saved successfully!")
 	} else {
-		support.Send(s, "Sorry, there was an error sending /save command")
+		support.Send(s, "Lo sentimos, hubo un error al enviar /save command")
 	}
 }
