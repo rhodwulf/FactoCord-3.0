@@ -15,26 +15,26 @@ import (
 var ConfigCommandDoc = support.CommandDoc{
 	Name:  "config",
 	Usage: "$config save | load | get <path> | set <path> <value>?",
-	Doc:   "command manages FactoCord's config",
+	Doc:   "el comando administra la configuración de FactoCord",
 	Subcommands: []support.CommandDoc{
 		{
 			Name: "save",
-			Doc: "command saves FactoCord's config from memory to `config.json`.\n" +
-				"It also adds any options missing from config.json",
+			Doc: "El comando guarda la configuración de FactoCord de la memoria para `config.json`.\n" +
+				"También agrega las opciones que faltan en config.json",
 		},
 		{
 			Name: "load",
-			Doc: "command loads the config from `config.json`.\n" +
-				"Any unsaved changes after the last `$config save` command will be lost.",
+			Doc: "El comando carga la configuración desde `config.json`.\n" +
+				"Cualquier cambio no guardado después del último `$config save` comando se perderá.",
 		},
 		{
 			Name:  "get",
 			Usage: "$config get <path>?",
-			Doc: "command outputs the value of a config setting specified by <path>.\n" +
-				"All path members are separated by a dot '.'\n" +
-				"If the path is empty, it outputs the whole config.\n" +
-				"Secrets like discord_token are kept secret.\n" +
-				"Examples:\n" +
+			Doc: "El comando genera el valor de un ajuste de configuración especificado por <path>.\n" +
+				"Todos los miembros de la ruta están separados por un punto '.'\n" +
+				"Si la ruta está vacía, genera la configuración completa.\n" +
+				"Secretos como discord_token se mantienen en secreto.\n" +
+				"Ejemplos:\n" +
 				"```\n" +
 				"$config get\n" +
 				"$config get admin_ids\n" +
@@ -48,12 +48,12 @@ var ConfigCommandDoc = support.CommandDoc{
 			Name: "set",
 			Usage: "$config set <path>\n" +
 				"$config set <path> <value>",
-			Doc: "command sets the value of a config setting specified by <path>.\n" +
-				"This command can set only simple types such as strings, numbers, and booleans.\n" +
-				"If no value is specified, this command deletes the value if possible, otherwise it sets it to a zero-value (0, \"\", false).\n" +
-				"To add a value to an array or an object specify it's index as '*' (e.g. `$config set admin_ids.* 1234`).\n" +
-				"Changes made by this command are not automatically saved. Use `$config save` to do it.\n" +
-				"Examples:" +
+			Doc: "El comando establece el valor de un ajuste de configuración especificado por <path>.\n" +
+				"Este comando puede establecer solo tipos simples como cadenas, números y booleanos.\n" +
+				"Si no se especifica ningún valor, este comando elimina el valor si es posible; de lo contrario, lo establece en un zero-value (0, \"\", false).\n" +
+				"Para agregar un valor a una matriz o un objeto, especifique su índice como '*' (e.g. `$config set admin_ids.* 1234`).\n" +
+				"Los cambios realizados por este comando no se guardan automáticamente. Usar `$config save` para hacerlo.\n" +
+				"Ejemplos:" +
 				"```\n" +
 				"$config set prefix !\n" +
 				"$config set game_name \"Factorio 1.0\"\n" +
@@ -70,13 +70,13 @@ var ConfigCommandDoc = support.CommandDoc{
 // ModCommand returns the list of mods running on the server.
 func ConfigCommand(s *discordgo.Session, args string) {
 	if args == "" {
-		support.SendFormat(s, "Usage: "+ConfigCommandDoc.Usage)
+		support.SendFormat(s, "Uso: "+ConfigCommandDoc.Usage)
 		return
 	}
 	action, args := support.SplitDivide(args, " ")
 	args = strings.TrimSpace(args)
 	if _, ok := commands[action]; !ok {
-		support.SendFormat(s, "Usage: "+ConfigCommandDoc.Usage)
+		support.SendFormat(s, "Uso: "+ConfigCommandDoc.Usage)
 		return
 	}
 	res := commands[action](args)
@@ -92,47 +92,47 @@ var commands = map[string]func(string) string{
 
 func save(args string) string {
 	if args != "" {
-		return "Save accepts no arguments"
+		return "Guardar no acepta argumentos"
 	}
 	s, err := json.MarshalIndent(support.Config, "", "    ")
 	if err != nil {
-		support.Panik(err, "... when converting config to json")
-		return "Error when converting config to json"
+		support.Panik(err, "... al convertir la configuración a json")
+		return "Error al convertir config a json"
 	}
 	err = ioutil.WriteFile(support.ConfigPath, s, 0666)
 	if err != nil {
-		support.Panik(err, "... when saving config.json")
-		return "Error when saving config.json"
+		support.Panik(err, "... al guardar config.json")
+		return "Error al guardar config.json"
 	}
-	return "Config saved"
+	return "configuración guardada"
 }
 
 func load(args string) string {
 	if args != "" {
-		return "Load accepts no arguments"
+		return "La carga no acepta argumentos"
 	}
 	err := support.Config.Load()
 	if err != nil {
 		return err.Error()
 	}
-	return "Config reloaded"
+	return "Configuración recargada"
 }
 
 func get(args string) string {
 	if strings.Contains(args, " \n\t") {
-		return "Why are there spaces in the path?"
+		return "¿Por qué hay espacios en la ruta?"
 	}
 	var value interface{}
 	if args == "" {
 		config := support.Config // copy
-		config.DiscordToken = "my precious"
-		config.Username = "my precious"
-		config.ModPortalToken = "my precious"
+		config.DiscordToken = "mi precioso"
+		config.Username = "mi precioso"
+		config.ModPortalToken = "mi precioso"
 		value = config
 	} else {
 		path := strings.Split(args, ".")
 		if path[0] == "discord_token" {
-			return "Shhhh, it's a secret"
+			return "Shhhh, es un secreto"
 		}
 		x, err := walk(&support.Config, path)
 		if err != nil {
@@ -142,8 +142,8 @@ func get(args string) string {
 	}
 	res, err := json.MarshalIndent(value, "", "    ")
 	if err != nil {
-		support.Panik(err, "... when converting to json")
-		return "Error when converting to json"
+		support.Panik(err, "... al convertir a json")
+		return "Error al convertir a json"
 	}
 	return fmt.Sprintf("```json\n%s\n```", string(res))
 }
@@ -151,14 +151,14 @@ func get(args string) string {
 func set(args string) string {
 	pathS, valueS := support.SplitDivide(args, " ")
 	if pathS == "" {
-		return support.FormatUsage("Usage: $config set <path> <value>?")
+		return support.FormatUsage("Uso: $config set <path> <value>?")
 	}
 	path := strings.Split(pathS, ".")
 	if len(path) == 0 {
 		return "wtf??"
 	}
 	if path[0] == "discord_token" {
-		return "Are trying to brainwash me?"
+		return "¿Están tratando de lavarme el cerebro?"
 	}
 	name := path[len(path)-1]
 	pathTo := strings.Join(path[:len(path)-1], ".")
@@ -180,10 +180,10 @@ func set(args string) string {
 		} else {
 			num, err := strconv.ParseUint(name, 10, 0)
 			if err != nil {
-				return fmt.Sprintf("%s is array but \"%s\" is not an int", pathS, name)
+				return fmt.Sprintf("%s es matriz pero \"%s\" no es un int", pathS, name)
 			}
 			if current.Len() <= int(num) {
-				return fmt.Sprintf("%d is bigger than %s's size (%d)", num, pathS, current.Len())
+				return fmt.Sprintf("%d es mayor que %s's tamaño (%d)", num, pathS, current.Len())
 			}
 			if valueS == "" {
 				sliceRemove(current, int(num))
@@ -199,9 +199,9 @@ func set(args string) string {
 		fieldName := getFieldByTag(name, "json", current.Type())
 		if fieldName == "" {
 			if pathTo == "." {
-				return fmt.Sprintf("config does not have an option called \"%s\"", name)
+				return fmt.Sprintf("config no tiene una opción llamada \"%s\"", name)
 			} else {
-				return fmt.Sprintf("struct %s does not have a field called \"%s\"", pathTo, name)
+				return fmt.Sprintf("estructura %s no tiene un campo llamado \"%s\"", pathTo, name)
 			}
 		}
 		field := current.FieldByName(fieldName)
@@ -226,7 +226,7 @@ func set(args string) string {
 		}
 		current.SetMapIndex(key, value)
 	default:
-		return fmt.Sprintf("%s's type (%s) is not supported", pathS, current.Type().String())
+		return fmt.Sprintf("%s's tipo (%s) no es soprotad", pathS, current.Type().String())
 	}
 	return "Value set"
 }
@@ -243,16 +243,16 @@ func walk(v interface{}, path []string) (reflect.Value, error) {
 		case reflect.Slice:
 			num, err := strconv.ParseUint(name, 10, 0)
 			if err != nil {
-				return reflect.Value{}, fmt.Errorf("%s is array but \"%s\" is not an int", walkedPath, name)
+				return reflect.Value{}, fmt.Errorf("%s es matriz pero \"%s\" is not an int", walkedPath, name)
 			}
 			if current.Len() <= int(num) {
-				return reflect.Value{}, fmt.Errorf("size of %s[%d] is less than %d", walkedPath, current.Len(), num)
+				return reflect.Value{}, fmt.Errorf("tamaño de %s[%d] es menos que %d", walkedPath, current.Len(), num)
 			}
 			current = current.Index(int(num))
 		case reflect.Struct:
 			field := getFieldByTag(name, "json", current.Type())
 			if field == "" {
-				return reflect.Value{}, fmt.Errorf("struct %s does not have a field called \"%s\"", walkedPath, name)
+				return reflect.Value{}, fmt.Errorf("estructura %s no tiene un campo llamado \"%s\"", walkedPath, name)
 			}
 			current = current.FieldByName(field)
 		case reflect.Map:
@@ -262,10 +262,10 @@ func walk(v interface{}, path []string) (reflect.Value, error) {
 			}
 			current = current.MapIndex(key)
 			if !current.IsValid() {
-				return reflect.Value{}, fmt.Errorf("%s does not have key \"%s\"", walkedPath, name)
+				return reflect.Value{}, fmt.Errorf("%s no tiene llave \"%s\"", walkedPath, name)
 			}
 		default:
-			return reflect.Value{}, fmt.Errorf("%s's type (%s) is not supported", walkedPath, current.Type().String())
+			return reflect.Value{}, fmt.Errorf("%s's tipo (%s) no es soportado", walkedPath, current.Type().String())
 		}
 	}
 	return current, nil
@@ -279,13 +279,13 @@ func createValue(t reflect.Type, value string) (reflect.Value, string) {
 	case reflect.Bool:
 		val, err := strconv.ParseBool(value)
 		if err != nil {
-			return reflect.Value{}, fmt.Sprintf(" requires bool but \"%s\" can't be converted to bool", value)
+			return reflect.Value{}, fmt.Sprintf(" requiere bool pero \"%s\" no se puede convertir a bool", value)
 		}
 		return reflect.ValueOf(val), ""
 	case reflect.Int:
 		num, err := strconv.ParseUint(value, 10, 0)
 		if err != nil {
-			return reflect.Value{}, fmt.Sprintf(" requires int but \"%s\" is not an int", value)
+			return reflect.Value{}, fmt.Sprintf(" requiere int pero \"%s\" no es un int", value)
 		}
 		return reflect.ValueOf(int(num)), ""
 	case reflect.String:
@@ -294,7 +294,7 @@ func createValue(t reflect.Type, value string) (reflect.Value, string) {
 		}
 		return reflect.ValueOf(value), ""
 	default:
-		return reflect.Value{}, fmt.Sprintf("'s type (%s) is not supported", t.String())
+		return reflect.Value{}, fmt.Sprintf("'s tipo (%s) no es soportado", t.String())
 	}
 }
 
