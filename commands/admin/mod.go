@@ -139,42 +139,42 @@ type modPortalResponse struct {
 var ModCommandDoc = support.CommandDoc{
 	Name:  "mod",
 	Usage: "$mod (add|remove|enable|disable) <modnames>+ | update <modnames>*",
-	Doc: "command downloads, removes, enables and disables several mods.\n" +
-		"If mod's name contains a whitespace ' ', it's name should be quoted using double quotes (e.g. `\"Squeak Through\"`).\n" +
-		"All subcommands can process several mods at once. Mods' names should be separated by a whitespace.",
+	Doc: "El comando descarga, elimina, habilita y deshabilita varios mods.\n" +
+		"Si el nombre del mod contiene un espacio en blanco ' ', su nombre debe citarse usando comillas dobles (ej. `\"Squeak Through\"`).\n" +
+		"Todos los subcomandos pueden procesar varias modificaciones a la vez. Los nombres de los mods deben estar separados por un espacio en blanco.",
 	Subcommands: []support.CommandDoc{
 		{
 			Name:  "add",
 			Usage: "$mod add <modname>+",
-			Doc: "command adds mods to mod-list.json and downloads the latest version or a specified version.\n" +
-				"To download the latest version of a mod type a mod name.\n" +
-				"To specify a version for a mod add '==' and a version (e.g. `$mod add FNEI==0.3.4`).\n" +
-				"This command ensures that factorio version is the same as mod's factorio version.",
+			Doc: "El comando agrega mods a mod-list.json y descarga la última versión o una versión específica.\n" +
+				"Para descargar la última versión de un mod, escriba un nombre de mod.\n" +
+				"Para especificar una versión para un mod, agregue '==' y una versión (ej. `$mod add FNEI==0.3.4`).\n" +
+				"Este comando asegura que la versión de factorio sea la misma que la versión de factorio de mod.",
 		},
 		{
 			Name: "update",
 			Usage: "$mod update\n" +
 				"$mod update <modname>+",
-			Doc: "command updates either the specified mods or all mods.\n" +
-				"To update a mod to the latest version specify mod name.\n" +
-				"To update a mod to a specific version type mod name, '==', and mod version (e.g. `$mod update FNEI==0.3.4`).\n" +
-				"To update all mods to the latest version use `$mod update`.\n" +
-				"This command ensures that factorio version is the same as mod's factorio version.",
+			Doc: "el comando actualiza las modificaciones especificadas o todas las modificaciones.\n" +
+				"Para actualizar un mod a la última versión, especifique el nombre del mod.\n" +
+				"Para actualizar un mod a una versión específica, escriba el nombre del mod, '==' y la versión del mod (ej. `$mod update FNEI==0.3.4`).\n" +
+				"Para actualizar todas las modificaciones a la última versión, use `$mod update`.\n" +
+				"Este comando asegura que la versión de factorio sea la misma que la versión de factorio del mod.",
 		},
 		{
 			Name:  "remove",
 			Usage: "$mod remove <modname>+",
-			Doc:   "command removes mods from mod-list.json and deletes mods' files",
+			Doc:   "El comando elimina mods de mod-list.json y elimina los archivos de mods.",
 		},
 		{
 			Name:  "enable",
 			Usage: "$mod enable <modname>+",
-			Doc:   "command enables mods in mod-list.json",
+			Doc:   "el comando habilita mods en mod-list.json",
 		},
 		{
 			Name:  "disable",
 			Usage: "$mod disable <modname>+",
-			Doc:   "command disables mods in mod-list.json",
+			Doc:   "el comando deshabilita mods en mod-list.json",
 		},
 	},
 }
@@ -183,7 +183,7 @@ var ModCommandDoc = support.CommandDoc{
 func ModCommand(s *discordgo.Session, args string) {
 	argsList := strings.SplitN(args, " ", 2)
 	if len(argsList) == 0 {
-		support.SendFormat(s, "Usage: "+ModCommandDoc.Usage)
+		support.SendFormat(s, "Uso: "+ModCommandDoc.Usage)
 		return
 	}
 
@@ -193,17 +193,17 @@ func ModCommand(s *discordgo.Session, args string) {
 		//
 	case "add", "remove", "enable", "disable":
 		if len(argsList) < 2 {
-			support.SendFormat(s, "Usage: $mod "+action+" <modname> [<modname>]+")
+			support.SendFormat(s, "Uso: $mod "+action+" <modname> [<modname>]+")
 			return
 		}
 	default:
-		support.SendFormat(s, "Usage: "+ModCommandDoc.Usage)
+		support.SendFormat(s, "Uso: "+ModCommandDoc.Usage)
 		return
 	}
 
 	modnames, mismatched := support.QuoteSplit(strings.Join(argsList[1:], " "), "\"")
 	if mismatched {
-		support.Send(s, "Error: Mismatched quotes")
+		support.Send(s, "Error: comillas no coincidentes")
 		return
 	}
 	var modDescriptions []modDescriptionT
@@ -211,7 +211,7 @@ func ModCommand(s *discordgo.Session, args string) {
 		for _, modname := range modnames {
 			desc, err := modDescription(modname)
 			if err != nil {
-				support.Send(s, "Error parsing version: "+modname)
+				support.Send(s, "Error al analizar la versión: "+modname)
 				return
 			}
 			modDescriptions = append(modDescriptions, *desc)
@@ -223,26 +223,26 @@ func ModCommand(s *discordgo.Session, args string) {
 		if support.AnyTwo(t, func(desc interface{}, desc2 interface{}) bool {
 			return desc.(modDescriptionT).name == desc2.(modDescriptionT).name
 		}) {
-			support.Send(s, "Who am I supposed to add a single mod twice?")
+			support.Send(s, "¿Se supone que debo agregar un solo mod dos veces?")
 			return
 		}
 	} else if !support.IsUnique(modnames) {
-		support.Send(s, "Who am I supposed to change a single mod twice?")
+		support.Send(s, "¿Se supone que debo cambiar un solo mod dos veces?")
 		return
 	}
 
 	modsListFile, err := ioutil.ReadFile(support.Config.ModListLocation)
 	if err != nil {
-		support.Send(s, "Sorry, there was an error reading your mod list")
-		support.Panik(err, "there was an error reading mods list, did you specify it in the config.json file?")
+		support.Send(s, "Lo sentimos, hubo un error al leer tu lista de mods.")
+		support.Panik(err, "hubo un error al leer la lista de mods, ¿lo especificó en el archivo config.json?")
 		return
 	}
 
 	mods := &ModJSON{}
 	err = json.Unmarshal(modsListFile, &mods)
 	if err != nil {
-		support.Send(s, "Sorry, there was an error reading your mod list")
-		support.Panik(err, "there was an error reading mod list")
+		support.Send(s, "Lo sentimos, hubo un error al leer tu lista de mods.")
+		support.Panik(err, "hubo un error al leer la lista de mods")
 		return
 	}
 
@@ -264,14 +264,14 @@ func ModCommand(s *discordgo.Session, args string) {
 
 	modsListFile, err = json.MarshalIndent(mods, "", "    ")
 	if err != nil {
-		support.Send(s, "Sorry, there was an error converting mod list to json")
+		support.Send(s, "Lo sentimos, hubo un error al convertir la lista de mods a json")
 		support.Panik(err, "there was an error converting mod list to json")
 		return
 	}
 	err = ioutil.WriteFile(support.Config.ModListLocation, modsListFile, 0666)
 	if err != nil {
-		support.Send(s, "Sorry, there was an error saving mod list")
-		support.Panik(err, "there was an error saving mod list")
+		support.Send(s, "Lo sentimos, hubo un error al guardar la lista de mods.")
+		support.Panik(err, "hubo un error al guardar la lista de mods")
 		return
 	}
 
@@ -283,13 +283,13 @@ func modsAdd(s *discordgo.Session, mods *ModJSON, modDescriptions *[]modDescript
 
 	files := matchModsWithFiles(&mods.Mods)
 
-	addedMods := support.DefaultTextList("**Added mods:**")
-	alreadyAdded := support.DefaultTextList("\n**Already added:**")
-	userErrors := support.DefaultTextList("\n**Errors:**")
+	addedMods := support.DefaultTextList("**Mods añadidos:**")
+	alreadyAdded := support.DefaultTextList("\n**Ya agregado:**")
+	userErrors := support.DefaultTextList("\n**Errores:**")
 
 	factorioVersion, err := factorioVersion()
 	if err != nil {
-		return "Error checking factorio version"
+		return "Error al comprobar la versión de factorio"
 	}
 
 	for _, desc := range *modDescriptions {
@@ -299,7 +299,7 @@ func modsAdd(s *discordgo.Session, mods *ModJSON, modDescriptions *[]modDescript
 		}
 		release, userError, err := checkModPortal(&desc, factorioVersion)
 		if err != nil {
-			return "Some connection error occurred"
+			return "Se produjo algún error de conexión"
 		}
 		if userError != "" {
 			userErrors.Append(fmt.Sprintf("%s: %s", desc.String(), userError))
@@ -314,7 +314,7 @@ func modsAdd(s *discordgo.Session, mods *ModJSON, modDescriptions *[]modDescript
 		} else {
 			alreadyAdded.Append(desc.String())
 			if desc.version.Full != "" {
-				alreadyAdded.AddToLast(support.FormatUsage(" - to update a mod use `$mod update` command"))
+				alreadyAdded.AddToLast(support.FormatUsage(" - para actualizar un uso mod `$mod update` command"))
 			}
 		}
 	}
@@ -322,11 +322,11 @@ func modsAdd(s *discordgo.Session, mods *ModJSON, modDescriptions *[]modDescript
 	if len(*modDescriptions) == 1 {
 		_, downloaded := files.versions[(*modDescriptions)[0].name]
 		if alreadyAdded.NotEmpty() && !downloaded {
-			res = fmt.Sprintf("Mod \"%s\" is already added", (*modDescriptions)[0].String())
+			res = fmt.Sprintf("Mod \"%s\" ya esta agregado", (*modDescriptions)[0].String())
 		} else if userErrors.NotEmpty() {
 			res = strings.TrimSpace(userErrors.List[0])
 		} else {
-			res = fmt.Sprintf("Added mod \"%s\"", (*modDescriptions)[0].String())
+			res = fmt.Sprintf("Mod agregado \"%s\"", (*modDescriptions)[0].String())
 		}
 	} else {
 		res = addedMods.Render()
@@ -336,9 +336,9 @@ func modsAdd(s *discordgo.Session, mods *ModJSON, modDescriptions *[]modDescript
 	res += checkDependencies(toDownload, files)
 
 	if support.Config.ModPortalToken == "" {
-		res += "\n**No token to download mods**"
+		res += "\n**Sin token para descargar mods**"
 	} else if support.Config.Username == "" {
-		res += "\n**No username to download mods**"
+		res += "\n**Sin nombre de usuario para descargar mods**"
 	} else {
 		if !modDownloaderStarted {
 			go modDownloader(s)
@@ -361,14 +361,14 @@ func factorioVersion() (string, error) {
 
 func modsUpdate(s *discordgo.Session, mods *ModJSON, modDescriptions *[]modDescriptionT) string {
 	if support.Config.ModPortalToken == "" {
-		return "**No token to download mods**"
+		return "**Sin token para descargar mod**"
 	} else if support.Config.Username == "" {
-		return "**No username to download mods**"
+		return "**Sin nombre de usuario para descargar mods**"
 	}
 
-	updatedMods := support.DefaultTextList("**Updating mods:**")
-	alreadyUpdated := support.DefaultTextList("\n**Already updated:**")
-	userErrors := support.DefaultTextList("\n**Errors:**")
+	updatedMods := support.DefaultTextList("**Actualizando mods:**")
+	alreadyUpdated := support.DefaultTextList("\n**Ya actualizado:**")
+	userErrors := support.DefaultTextList("\n**Errores:**")
 
 	var toDownload []*modRelease
 
