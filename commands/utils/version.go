@@ -9,20 +9,20 @@ import (
 
 var VersionDoc = support.CommandDoc{
 	Name: "version",
-	Doc: `command outputs factorio server version and FactoCord version.
-If it says that FactoCord version is unknown look into the error.log`,
+	Doc: `el comando emite la versión del servidor de factorio y la versión de FactoCord.
+Si dice que la versión de FactoCord es desconocida, busque en el error.log`,
 }
 
 func VersionString(s *discordgo.Session, _ string) {
 	factorioVersion, err := support.FactorioVersion()
 	if err != nil {
-		support.Send(s, "Sorry, there was an error checking factorio version")
-		support.Panik(err, "... when running `factorio --version`")
+		support.Send(s, "Lo sentimos, hubo un error al verificar la versión de factorio")
+		support.Panik(err, "... al correr `factorio --version`")
 		return
 	}
-	res := "Server version: **" + factorioVersion + "**"
+	res := "Versión del servidor: **" + factorioVersion + "**"
 
-	res += fmt.Sprintf("\nFactoCord version: **%s**", support.FactoCordVersion)
+	res += fmt.Sprintf("\nVersión de FactoCord: **%s**", support.FactoCordVersion)
 
 	support.Send(s, res)
 }
