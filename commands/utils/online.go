@@ -27,7 +27,7 @@ func getOnline(info *gameInfo) *support.TextListT {
 		maxPlayers = fmt.Sprintf("/%d", info.MaxPlayers)
 	}
 	online := support.DefaultTextList(
-		fmt.Sprintf("**%d%s jugador%es en línea:**", len(info.Players), maxPlayers, support.PluralS(len(info.Players))),
+		fmt.Sprintf("**%d%s jugador%s en línea:**", len(info.Players), maxPlayers, support.PluralS(len(info.Players))),
 	)
 	for _, player := range info.Players {
 		online.Append(player)
@@ -47,27 +47,27 @@ func GameOnline(s *discordgo.Session, _ string) {
 
 	resp, err := http.Get("https://multiplayer.factorio.com/get-game-details/" + support.Factorio.GameID)
 	if err != nil {
-		support.Panik(err, "Connection error to /get-game-details")
-		support.Send(s, "Some connection error occurred")
+		support.Panik(err, "Error de conexión a /get-game-details")
+		support.Send(s, "Se produjo algún error de conexión")
 		return
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
 	if err != nil {
-		support.Panik(err, "Error reading /get-game-details")
-		support.Send(s, "Some connection error occurred")
+		support.Panik(err, "Error leyendo /get-game-details")
+		support.Send(s, "Se produjo algún error de conexión")
 		return
 	}
 
 	info := gameInfo{}
 	err = json.Unmarshal(body, &info)
 	if err != nil {
-		support.Panik(err, "Error unmarshalling /get-game-details")
-		support.Send(s, "Some json error occurred")
+		support.Panik(err, "Error desarmando /get-game-details")
+		support.Send(s, "Se produjo un error json")
 		return
 	}
 	if info.Message != "" {
-		support.Send(s, "The server reports: "+info.Message)
+		support.Send(s, "El servidor informa: "+info.Message)
 		return
 	}
 
