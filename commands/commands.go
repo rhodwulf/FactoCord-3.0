@@ -34,49 +34,49 @@ var Commands = [...]Command{
 		Command: admin.ServerCommand,
 		Admin:   admin.ServerCommandAdminPermission,
 		Doc:     &admin.ServerCommandDoc,
-		Desc:    "Manage factorio server",
+		Desc:    "Administrar el servidor de factorio",
 	},
 	{
 		Name:    "save",
 		Command: admin.SaveServer,
 		Admin:   alwaysAdmin,
 		Doc:     &admin.SaveServerDoc,
-		Desc:    "Save the game",
+		Desc:    "Guarda el juego",
 	},
 	{
 		Name:    "kick",
 		Command: admin.KickPlayer,
 		Admin:   alwaysAdmin,
 		Doc:     &admin.KickPlayerDoc,
-		Desc:    "Kick a user from the server",
+		Desc:    "Explulsa a un jugador del servidor",
 	},
 	{
 		Name:    "ban",
 		Command: admin.BanPlayer,
 		Admin:   alwaysAdmin,
 		Doc:     &admin.BanPlayerDoc,
-		Desc:    "Ban a user from the server",
+		Desc:    "Banea a un jugador del servidor",
 	},
 	{
 		Name:    "unban",
 		Command: admin.UnbanPlayer,
 		Admin:   alwaysAdmin,
 		Doc:     &admin.UnbanPlayerDoc,
-		Desc:    "Unban a user from the server",
+		Desc:    "Desbanea a un usuario del servidor",
 	},
 	{
 		Name:    "config",
 		Command: admin.ConfigCommand,
 		Admin:   alwaysAdmin,
 		Doc:     &admin.ConfigCommandDoc,
-		Desc:    "Manage config.json",
+		Desc:    "Administra config.json",
 	},
 	{
 		Name:    "mod",
 		Command: admin.ModCommand,
 		Admin:   alwaysAdmin,
 		Doc:     &admin.ModCommandDoc,
-		Desc:    "Manage mod-list.json",
+		Desc:    "Administra mod-list.json",
 	},
 
 	// Util Commands
@@ -85,28 +85,28 @@ var Commands = [...]Command{
 		Command: utils.ModsList,
 		Admin:   nil,
 		Doc:     &utils.ModListDoc,
-		Desc:    "List the mods on the server",
+		Desc:    "Crea una lista de los mods del servidor",
 	},
 	{
 		Name:    "version",
 		Command: utils.VersionString,
 		Admin:   nil,
 		Doc:     &utils.VersionDoc,
-		Desc:    "Get server version",
+		Desc:    "Muestra la versión del servidor",
 	},
 	{
 		Name:    "info",
 		Command: utils.GameInfo,
 		Admin:   nil,
 		Doc:     &utils.InfoDoc,
-		Desc:    "Get server info",
+		Desc:    "Muestra información del servidor",
 	},
 	{
 		Name:    "online",
 		Command: utils.GameOnline,
 		Admin:   nil,
 		Doc:     &utils.OnlineDoc,
-		Desc:    "Get players online",
+		Desc:    "Muestra jugadores en línea",
 	},
 	{
 		Name:  "help",
@@ -116,9 +116,9 @@ var Commands = [...]Command{
 			Usage: "$help\n" +
 				"$help <command>\n" +
 				"$help <command> <subcommand>",
-			Doc: "command returns list of all commands and documentation about any command and its' subcommands",
+			Doc: "comando devuelve una lista de todos los comandos y documentación sobre cualquier comando y sus subcomandos",
 		},
-		Desc: "List the commands for Factocord and get documentation on commands and subcommands. Try `$help help`",
+		Desc: "Enumera los comandos para el servidor y obtenga documentación sobre comandos y subcomandos. Intenta usar `$help help`",
 	},
 }
 
@@ -135,7 +135,7 @@ func helpCommand(s *discordgo.Session, args string) {
 			return
 		}
 	}
-	support.Send(s, "There's no such command as \""+commandName+"\"")
+	support.Send(s, "No existe el comando \""+commandName+"\"")
 }
 
 func helpOnCommand(s *discordgo.Session, command *support.CommandDoc, subcommandName string) {
@@ -151,7 +151,7 @@ func helpOnCommand(s *discordgo.Session, command *support.CommandDoc, subcommand
 			}
 		}
 		if !found {
-			support.Send(s, fmt.Sprintf(`Command "%s" has no subcommand "%s"`, command.Name, subcommandName))
+			support.Send(s, fmt.Sprintf(`El comando "%s" no tiene subcomando "%s"`, command.Name, subcommandName))
 			return
 		}
 	}
@@ -159,7 +159,7 @@ func helpOnCommand(s *discordgo.Session, command *support.CommandDoc, subcommand
 	embed := &discordgo.MessageEmbed{
 		Type:        "rich",
 		Color:       0x6289FF,
-		Title:       fmt.Sprintf("Documentation on `%s` command", path),
+		Title:       fmt.Sprintf("Documentación sobre `%s` comando", path),
 		Description: support.FormatUsage(quoted + " " + command.Doc),
 	}
 	usage := command.Usage
@@ -201,7 +201,7 @@ func helpAllCommands(s *discordgo.Session) {
 		if roleID, exists := support.Config.CommandRoles[strings.ToLower(command.Name)]; exists {
 			roles, err := s.GuildRoles(support.GuildID)
 			if err != nil {
-				support.Panik(err, "... when querying guild roles")
+				support.Panik(err, "... al consultar los roles del gremio")
 				return
 			}
 			found := false
@@ -213,7 +213,7 @@ func helpAllCommands(s *discordgo.Session) {
 				}
 			}
 			if !found {
-				desc = "[Role not found in guild] " + desc
+				desc = "[Rol no encontrado en el gremio] " + desc
 			}
 		} else if command.Admin != nil {
 			desc = "[Admin] " + desc
@@ -226,8 +226,8 @@ func helpAllCommands(s *discordgo.Session) {
 	embed := &discordgo.MessageEmbed{
 		Type:        "rich",
 		Color:       52,
-		Description: "List of all commands currently available in this version of FactoCord",
-		Title:       "FactoCord Commands",
+		Description: "Lista de todos los comandos actualmente disponibles",
+		Title:       "Comandos del servidor",
 		Fields:      fields,
 	}
 	support.SendEmbed(s, embed)
