@@ -3,8 +3,8 @@
 <a href="https://goreportcard.com/report/github.com/thecmdradama/FactoCord-2.0"><img src="https://goreportcard.com/badge/github.com/thecmdradama/FactoCord-2.0" alt="Go Report Card"></a>
 </p>
 
-#Proyecto original: https://github.com/maxsupermanhd/FactoCord-3.0
-*Esté es solo un fork que he hecho para traducir todos los mensajes, todo el crédito es para su autor original.
+# Proyecto original: https://github.com/maxsupermanhd/FactoCord-3.0
+* Esté es solo un fork que he hecho para traducir todos los mensajes, todo el crédito es para su autor original.
 
 # Features
 * Sincronización de chat entre un servidor de factorio y un canal de discord
