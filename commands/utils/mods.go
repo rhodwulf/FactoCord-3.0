@@ -23,13 +23,13 @@ type Mod struct {
 
 var ModListDoc = support.CommandDoc{
 	Name:  "mods",
-	Doc:   `command outputs information about current mods`,
+	Doc:   `el comando genera información sobre los mods actuales`,
 	Usage: "$mods [on | off | all | files]",
 	Subcommands: []support.CommandDoc{
-		{Name: "on", Doc: `command sends currently enabled mods`},
-		{Name: "off", Doc: `command sends currently disabled mods`},
-		{Name: "all", Doc: `command sends all mods in mod-list.json`},
-		{Name: "files", Doc: `command sends filenames of all downloaded mods`},
+		{Name: "on", Doc: `el comando muestra mods habilitados actualmente`},
+		{Name: "off", Doc: `el comando muestra mods actualmente deshabilitados`},
+		{Name: "all", Doc: `el comando muestra todas las modificaciones en mod-list.json`},
+		{Name: "files", Doc: `el comando muestra los nombres de archivo de todos los mods descargados`},
 	},
 }
 
@@ -47,10 +47,10 @@ func modList(ModList *ModJson, returnEnabled bool, returnDisabled bool) string {
 		}
 	}
 
-	res := fmt.Sprintf("%d total %s (%d enabled, %d disabled)", len(ModList.Mods), S, enabled, disabled)
+	res := fmt.Sprintf("%d total %s (%d activados, %d desactivados)", len(ModList.Mods), S, enabled, disabled)
 
 	if returnEnabled {
-		res += "\n**Enabled:**"
+		res += "\n**Activados:**"
 		any := false
 		for _, mod := range ModList.Mods {
 			if mod.Enabled {
@@ -59,14 +59,14 @@ func modList(ModList *ModJson, returnEnabled bool, returnDisabled bool) string {
 			}
 		}
 		if !any {
-			res += " **None**"
+			res += " **Ninguno**"
 		}
 	}
 	if returnDisabled {
 		if returnEnabled {
 			res += "\n"
 		}
-		res += "\n**Disabled:**"
+		res += "\n**Desactivados:**"
 		any := false
 		for _, mod := range ModList.Mods {
 			if !mod.Enabled {
@@ -75,7 +75,7 @@ func modList(ModList *ModJson, returnEnabled bool, returnDisabled bool) string {
 			}
 		}
 		if !any {
-			res += " **None**"
+			res += " **Ninguno**"
 		}
 	}
 
@@ -96,9 +96,9 @@ func modsFiles() string {
 		}
 	}
 	if res == "" {
-		return "**No mods**"
+		return "**Sin mods**"
 	} else {
-		return "**Installed mods:**" + res
+		return "**Mods instalados:**" + res
 	}
 }
 
@@ -123,15 +123,15 @@ func ModsList(s *discordgo.Session, args string) {
 	ModList := &ModJson{}
 	Json, err := ioutil.ReadFile(support.Config.ModListLocation)
 	if err != nil {
-		support.Send(s, "Sorry, there was an error reading your mods list")
-		support.Panik(err, "there was an error reading mods list, did you specify it in the config.json file?")
+		support.Send(s, "Lo sentimos, hubo un error al leer tu lista de mods.")
+		support.Panik(err, "hubo un error al leer la lista de mods, ¿lo especificó en el archivo config.json?")
 		return
 	}
 
 	err = json.Unmarshal(Json, &ModList)
 	if err != nil {
-		support.Send(s, "Sorry, there was an error reading your mods list")
-		support.Panik(err, "there was an error reading mods list")
+		support.Send(s, "Lo sentimos, hubo un error al leer tu lista de mods.")
+		support.Panik(err, "hubo un error al leer la lista de mods")
 		return
 	}
 	support.ChunkedMessageSend(s, modList(ModList, returnEnabled, returnDisabled))
