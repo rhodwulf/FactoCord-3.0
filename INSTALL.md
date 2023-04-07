@@ -1,13 +1,13 @@
-# This file contains install instructions for Debian based systems
-Headless factorio server is used in this instruction (from factorio.com) in `/home/factorio`.
+# Este archivo contiene instrucciones de instalación para sistemas basados en Debian
+El servidor de factorio sin cabeza se usa en esta instrucción (de factorio.com) en `/home/factorio`.
 
-Tested on Ubuntu 18.04.4 LTS, Ubuntu 18.04.4 LTS (Server), WSL1 Ubuntu
+Probado en Ubuntu 18.04.4 LTS, Ubuntu 18.04.4 LTS (Servidor), WSL1 Ubuntu
 
-# Installing pre-built binaries
+# Instalar binarios prediseñados
 
-## Step 0
+## Paso 0
 
-Download the executable from [a release on github](https://github.com/maxsupermanhd/FactoCord-3.0/releases)
+Descargue el ejecutable de [un lanzamiento en github] (https://github.com/maxsupermanhd/FactoCord-3.0/releases)
 
 ## Step 1
 Configuring
@@ -26,8 +26,8 @@ Then in text editor you must set:
 5. Discord IDs of all the admins (for commands) (`admin_ids`)
 6. `mod-list.json` file location (including the filename) (`mod_list_location`)
 
-## Step 2
-Running
+## Paso 2
+Correr
 
 ```
 chmod +x ./FactoCord3
@@ -35,52 +35,52 @@ chmod +x ./FactoCord3
 ```
 
 
-# Installing from sources
+# Instalación desde fuentes
 
-## Step 0
-Installing deps
+## Paso 0
+Instalación de deps
 
-Make sure system is up to date `sudo apt-get update -y && sudo apt-get upgrade -y`
+Asegúrese de que el sistema esté actualizado `sudo apt-get update -y && sudo apt-get upgrade -y`
 
-Download go 1.12+ (`sudo apt install golang-go git -y`) (you may need to get it from the website, repos can be outdated)
+Descargue go 1.12+ (`sudo apt install golang-go git -y`) (es posible que deba obtenerlo del sitio web, los repositorios pueden estar desactualizados)
 
-Get go packages: `go get`
+Obtener paquetes go: `go get`
 
-## Step 1
-Cloning repo
+## Paso 1
+Repositorio de clonación
 
-`git clone https://github.com/maxsupermanhd/FactoCord-3.0.git`
+`clonar git https://github.com/maxsupermanhd/FactoCord-3.0.git`
 
-## Step 2
-Configuring
+## Paso 2
+configurando
 
-Enter created directory `cd FactoCord-3.0/`
+Introduzca el directorio creado `cd FactoCord-3.0/`
 
-Copy `config-example.json` to `config.json` (`cp config-example.json config.json`)
+Copie `config-example.json` a `config.json` (`cp config-example.json config.json`)
 
-Open `config.json` with any editor (ex. `nano config.json`)
+Abra `config.json` con cualquier editor (por ejemplo, `nano config.json`)
 
-Then in text editor you must set:
-1. Your Discord token for the bot (discord_token)
-2. ID of factorio channel for chatting (factorio_channel_id)
-3. Launching parameters (flags to factorio executable) (launch_parameters)
-4. Executable path (executable)
-5. Admin IDs (for commands) (admin_ids)
-6. Mod list .json file location (including the filename) (mod_list_location)
+Luego en el editor de texto debes configurar:
+1. Tu token de Discord para el bot (discord_token)
+2. ID del canal de factorio para chatear (factorio_channel_id)
+3. Parámetros de lanzamiento (flags to factorio ejecutable) (launch_parameters)
+4. Ruta ejecutable (ejecutable)
+5. ID de administrador (para comandos) (admin_ids)
+6. Ubicación del archivo .json de la lista de mods (incluido el nombre del archivo) (mod_list_location)
 
-# Step 3
-Building
+# Paso 3
+Edificio
 
-`go build`
+`ir a construir`
 
-## Step 4
-Running
+## Etapa 4
+Correr
 
 `./FactoCord-3.0`
 
-# Using scenario support
-... will eventually disable achievements, but you will have nice and clear chat in Discord.
-To have afk kicked people showed and be able to customize/potentially modify messages 
-please use control.lua **addition** from repo root. 
-If you don't want to be control.lua modified so hard, you can place it near and use 
-a `require` to get discord sending function (wrapper) and have full functionality of FactoCord.
+# Usar el soporte de escenarios
+... eventualmente deshabilitará los logros, pero tendrás un chat agradable y claro en Discord.
+Para que se muestren personas expulsadas y poder personalizar/modificar potencialmente los mensajes
+utilice control.lua **adición** desde la raíz del repositorio.
+Si no desea que control.lua se modifique con tanta fuerza, puede colocarlo cerca y utilizar
+un `requerido` para obtener la función de envío de discordia (envoltorio) y tener la funcionalidad completa de FactoCord.
