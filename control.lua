@@ -2,7 +2,7 @@
  -- Please configure as needed, any discord message will be sent in
  --  raw format if it starts with `0000-00-00 00:00:00 [DISCORD] `
  -- For more information visit https://github.com/maxsupermanhd/FactoCord-3.0
- -- If you have any question or comments join our Discord https://discord.gg/SUJRG47
+ -- If you have any question or comments join our Discord https://discord.gg/uNhtRH8
 
 local FactoCordIntegration = {}
 
@@ -14,9 +14,9 @@ script.on_event(defines.events.on_player_joined_game, function(event)
 	local p = game.players[event.player_index];
 	FactoCordIntegration.PrintToDiscord("**" .. p.name .. "** joined.");
 	if(p.admin == true) then
-		p.print("¡Bienvenido admin " .. p.name .. " al servidor!");
+		p.print("Welcome admin " .. p.name .. " to server!");
 	else
-		p.print("¡Bienvenido " .. p.name .. " al servidor!");
+		p.print("Welcome " .. p.name .. " to server!");
 	end
 end)
 
@@ -51,11 +51,11 @@ script.on_event(defines.events.on_player_died, function(event)
 	local p = game.players[event.player_index];
 	local c = event.cause
 	if not c then
-		FactoCordIntegration.PrintToDiscord("**" .. p.name .. "** ha muerto.");
+		FactoCordIntegration.PrintToDiscord("**" .. p.name .. "** died.");
 	else
 		local name = "Unknown";
 		if c.type == "character" then
-			name = {"", "player", " ", c.player.name};
+			name = c.player.name;
 		elseif c.type == "spider-vehicle" then
 			if c.entity_label then
 				name = {"", c.localised_name, " " , c.entity_label};
@@ -67,26 +67,26 @@ script.on_event(defines.events.on_player_died, function(event)
 		else
 			name = {"", "a ", c.localised_name};
 		end
-		FactoCordIntegration.PrintToDiscord({"", "**", p.name, "** fue asesinado por ", name, "."});
+		FactoCordIntegration.PrintToDiscord({"", "**", p.name, "** was killed by ", name, "."});
 	end
 end)
 script.on_event(defines.events.on_player_kicked, function(event)
 	local p = game.players[event.player_index];
-	FactoCordIntegration.PrintToDiscord("**" .. p.name .. "** expulsado.");
+	FactoCordIntegration.PrintToDiscord("**" .. p.name .. "** kicked.");
 end)
 script.on_event(defines.events.on_player_unbanned, function(event)
-	FactoCordIntegration.PrintToDiscord("**" .. event.player_name .. "** desbaneado.");
+	FactoCordIntegration.PrintToDiscord("**" .. event.player_name .. "** unbanned.");
 end)
 script.on_event(defines.events.on_player_unmuted, function(event)
 	local p = game.players[event.player_index];
-	FactoCordIntegration.PrintToDiscord("**" .. p.name .. "** desmuteado.");
+	FactoCordIntegration.PrintToDiscord("**" .. p.name .. "** unmuted.");
 end)
 script.on_event(defines.events.on_player_banned, function(event)
-	FactoCordIntegration.PrintToDiscord("**" .. event.player_name .. "** baneado.");
+	FactoCordIntegration.PrintToDiscord("**" .. event.player_name .. "** banned.");
 end)
 script.on_event(defines.events.on_player_muted, function(event)
 	local p = game.players[event.player_index];
-	FactoCordIntegration.PrintToDiscord("**" .. p.name .. "** muteado.");
+	FactoCordIntegration.PrintToDiscord("**" .. p.name .. "** muted.");
 end)
 
 
