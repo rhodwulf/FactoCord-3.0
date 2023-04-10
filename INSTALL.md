@@ -1,5 +1,5 @@
 # Este archivo contiene instrucciones de instalación para sistemas basados en Debian
-El servidor de factorio sin cabeza se usa en esta instrucción (de factorio.com) en `/home/factorio`.
+En este tutorial se utiliza el servidor de factorio "headless" (de factorio.com) en `/home/factorio`.
 
 Probado en Ubuntu 18.04.4 LTS, Ubuntu 18.04.4 LTS (Servidor), WSL1 Ubuntu
 
